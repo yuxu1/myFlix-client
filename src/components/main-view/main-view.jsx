@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
@@ -15,22 +15,6 @@ export const MainView = () => {
   //state variable to keep track of whether a user is logged in & token received from API
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
-
-  //if no user logged in, display LoginView & SignupView; upon login set token to token received from login API
-  if (!user) {
-    return (
-      <>
-        <LoginView
-          onLoggedIn={(user, token) => {
-            setUser(user);
-            setToken(token);
-          }}
-        />
-        or
-        <SignupView />
-      </>
-    );
-  }
 
   useEffect(() => {
     //check for token before exectuting fetch call
@@ -56,10 +40,27 @@ export const MainView = () => {
             featured: movie.Featured,
           };
         });
+
         //update state of movies to include the list of movies from API
         setMovies(moviesFromApi);
       });
   }, [token]);
+
+  //if no user logged in, display LoginView & SignupView; upon login set token to token received from login API
+  if (!user) {
+    return (
+      <>
+        <LoginView
+          onLoggedIn={(user, token) => {
+            setUser(user);
+            setToken(token);
+          }}
+        />
+        or
+        <SignupView />
+      </>
+    );
+  }
 
   //if a movie card was clicked (selected), renders MovieView of that movie
   if (selectedMovie) {
