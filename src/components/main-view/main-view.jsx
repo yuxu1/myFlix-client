@@ -3,6 +3,9 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import {Button} from "react-bootstrap";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -46,8 +49,62 @@ export const MainView = () => {
       });
   }, [token]);
 
+  //if no user logged in, display login and signup views
+  //if
+  return (
+    <Row className="justify-content-md-center">
+      {!user ? (
+        <Col md={5}>
+          <LoginView
+            onLoggedIn={(user, token) => {
+              setUser(user);
+              setToken(token);
+            }}
+          />
+          or
+          <SignupView />
+        </Col>
+      ) : selectedMovie ? (
+        <Col md={8}>
+          <MovieView
+            movie={selectedMovie}
+            //stops rendering MoveView when back button in MovieView is clicked
+            onBackClick={() => setSelectedMovie(null)}
+          />
+        </Col>
+      ) : movies.length === 0 ? (
+        <div>The list is empty!</div>
+      ) : (
+        <>
+          {movies.map((movie) => (
+            <Col className="mb-5" key={movie.id} md={3}>
+              <MovieCard
+                movie={movie}
+                //pass function as a prop "onMovieClick" to MovieCard;sets a movie to the selectedMovie state
+                onMovieClick={(newSelectedMovie) => {
+                  setSelectedMovie(newSelectedMovie);
+                }}
+              />
+            </Col>
+          ))}
+          <Button
+            variant="secondary"
+            //when Logout button clicked, reset(nullify) user and token
+            onClick={() => {
+              setUser(null);
+              setToken(null);
+              localStorage.clear();
+            }}
+          >
+            Logout
+          </Button>
+        </>
+      )}
+    </Row>
+  );
+
   //if no user logged in, display LoginView & SignupView; upon login set token to token received from login API
-  if (!user) {
+  /*if (!user) {
     return (
       <>
         <LoginView
@@ -101,5 +158,5 @@ export const MainView = () => {
         Logout
       </button>
     </div>
-  );
+  );*/
 };

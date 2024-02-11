@@ -11,7 +11,9 @@ export const MovieCard = ({ movie, onMovieClick }) => {
     >
       {movie.title}
     </div>*/
-    <Card>
+    
+    //movie cards set to height:100%
+    <Card className="h-100">
       <Card.Img variant="top" src={movie.image} />
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
