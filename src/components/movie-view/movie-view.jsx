@@ -3,9 +3,15 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {Button} from "react-bootstrap";
+import {useParams} from 'react-router';
+import {Link} from 'react-router-dom';
 
-//function prop onBackClick notifies MainView that the back button was clicked
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({ movies }) => {
+  //movieId called as  URL param in Route
+  const {movieId} = useParams();
+  //search through movies array to find one whose id matches id in URL param
+  const movie = movies.find((m) => m.id === movieId);
+
   return (
     <Row className="justify-content-md-center">
       <Col md={8}>
@@ -49,9 +55,10 @@ export const MovieView = ({ movie, onBackClick }) => {
           <span>Featured:</span>
           <span>{movie.featured}</span>
         </div>
-        <Button variant="secondary" onClick={onBackClick}>
-          Back
-        </Button>
+        
+        <Link to={`/`}>
+          <Button variant="secondary">Back</Button>
+        </Link>
       </Col>
     </Row>
   );
