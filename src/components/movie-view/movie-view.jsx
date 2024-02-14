@@ -53,9 +53,9 @@ export const MovieView = ({ movies }) => {
         </div>
         <div className="h6">
           <span>Featured:</span>
-          <span>{movie.featured}</span>
+          <span>{movie.featured ? 'true' : 'false'}</span>
         </div>
-        
+
         <Link to={`/`}>
           <Button variant="secondary">Back</Button>
         </Link>
