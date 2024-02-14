@@ -3,6 +3,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { SignupView } from '../signup-view/signup-view';
+import {ProfileView} from '../profile-view/profile-view';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 //import {Button} from "react-bootstrap";
@@ -12,12 +13,7 @@ import {NavigationBar} from '../navigation-bar/navigation-bar';
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const storedToken = localStorage.getItem('token');
-  //set initial state value of movies to empty array
   const [movies, setMovies] = useState([]);
-  //selectedMovie state - shows details of movie
-  //before a movie is selected, selectedMovie value is null
- // const [selectedMovie, setSelectedMovie] = useState(null);
-  //state variable to keep track of whether a user is logged in & token received from API
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
 
@@ -51,6 +47,46 @@ export const MainView = () => {
       });
   }, [token]);
 
+  //add movie to favorites
+  const addFavorite = (movieId) => {
+    fetch(`https://my-flix-project-b74d36752ec6.herokuapp.com/users/${user.Username}/movies/${movieId}`,{
+      method:'POST',
+      headers: {
+        Authorization: `Bearer${token}`
+      }
+    }).then((response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        alert ('Unsuccessful in adding movie to favorites');
+      }
+    }).then((user) => {
+      if(user) {
+        localStorage.setItem('user',JSON.stringify(user));
+        setUser(user);
+      }
+    })
+  };
+
+  const removeFavorite = (movieId) => {
+    fetch (`https://my-flix-project-b74d36752ec6.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer${token}`
+      }
+    }).then((response) => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        alert ('The movie was unable to be removed')
+      }
+    }).then((updatedUser) => {
+      if(updatedUser) {
+        localStorage.setItem('user',JSON.stringify(updatedUser));
+        setUser(updatedUser);
+      }
+    })
+  };
 
   return (
     <BrowserRouter>
@@ -100,6 +136,21 @@ export const MainView = () => {
       />
 
       <Route
+        path='/profile'
+        element= {
+          <>
+            {!user ? (
+              <Navigate to='/login' replace/>
+            ): (
+              <Col md={10}>
+                <ProfileView user={user} movies={movies} setUser={setUser} removeFavorite={removeFavorite}/>
+              </Col>
+            )}
+          </>
+        }
+      />
+
+      <Route
         path='/movies/:movieId'
         element = {
           <>
@@ -108,8 +159,8 @@ export const MainView = () => {
             ) : movies.length === 0 ? (
               <Col>The list is empty!</Col>
             ) : (
-              <Col md={8}>
-                <MovieView movies={movies}/>
+              <Col md={10}>
+                <MovieView movies={movies} addFavorite={addFavorite} removeFavorite={removeFavorite}/>
               </Col>
             )}
           </>
@@ -128,7 +179,7 @@ export const MainView = () => {
               <>
                 {movies.map((movie) => (
                   <Col className='mb-5' key={movie.id} md={3}>
-                    <MovieCard movie={movie}/>
+                    <MovieCard movie={movie} addFavorite={addFavorite}/>
                   </Col>
                 ))}
               </>
@@ -140,111 +191,4 @@ export const MainView = () => {
     </Row>
     </BrowserRouter>
   );
-
-  /*
-        {!user ? (
-        <Col md={5}>
-          <LoginView
-            onLoggedIn={(user, token) => {
-              setUser(user);
-              setToken(token);
-            }}
-          />
-          or
-          <SignupView />
-        </Col>
-      ) : selectedMovie ? (
-        <Col md={8}>
-          <MovieView
-            movie={selectedMovie}
-            //stops rendering MoveView when back button in MovieView is clicked
-            onBackClick={() => setSelectedMovie(null)}
-          />
-        </Col>
-      ) : movies.length === 0 ? (
-        <div>The list is empty!</div>
-      ) : (
-        <>
-          {movies.map((movie) => (
-            <Col className="mb-5" key={movie.id} md={3}>
-              <MovieCard
-                movie={movie}
-                //pass function as a prop "onMovieClick" to MovieCard;sets a movie to the selectedMovie state
-                onMovieClick={(newSelectedMovie) => {
-                  setSelectedMovie(newSelectedMovie);
-                }}
-              />
-            </Col>
-          ))}
-          <Button
-            variant="secondary"
-            //when Logout button clicked, reset(nullify) user and token
-            onClick={() => {
-              setUser(null);
-              setToken(null);
-              localStorage.clear();
-            }}
-          >
-            Logout
-          </Button>
-        </>
-      )}
-      /*
-
-  //if no user logged in, display LoginView & SignupView; upon login set token to token received from login API
-  /*if (!user) {
-    return (
-      <>
-        <LoginView
-          onLoggedIn={(user, token) => {
-            setUser(user);
-            setToken(token);
-          }}
-        />
-        or
-        <SignupView />
-      </>
-    );
-  }
-
-  //if a movie card was clicked (selected), renders MovieView of that movie
-  if (selectedMovie) {
-    return (
-      <MovieView
-        movie={selectedMovie}
-        //stops rendering MoveView when back button in MovieView is clicked
-        onBackClick={() => setSelectedMovie(null)}
-      />
-    );
-  }
-
-  if (movies.length === 0) {
-    return <div>The list is empty!</div>;
-  }
-
-  //main view: list of movie cards with the movies' titles
-  return (
-    <div>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          //pass function as a prop "onMovieClick" to MovieCard;sets a movie to the selectedMovie state
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
-          }}
-        />
-      ))}
-      <button
-        //when Logout button clicked, reset(nullify) user and token
-        onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      >
-        Logout
-      </button>
-    </div>
-  );*/
 };

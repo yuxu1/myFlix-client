@@ -4,7 +4,7 @@ import {Button, Card} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 
 //represents a card for each movie - display the title of the movie
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, addFavorite }) => {
   return (
     //movie cards set to height:100%
     <Card className="h-100">
@@ -15,6 +15,7 @@ export const MovieCard = ({ movie }) => {
         <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
           <Button variant="link">Open</Button>
         </Link>
+        <Button variant="link" onClick={()=>addFavorite(movie.id)}>Add to Favorites</Button>
       </Card.Body>
     </Card>
   );
