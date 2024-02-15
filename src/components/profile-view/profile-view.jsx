@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Card } from 'react-bootstrap';
@@ -10,10 +10,10 @@ import { MovieCard } from '../movie-card/movie-card';
 import moment from 'moment';
 
 export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
-  const [username, setUsername] = useState(user.Username);
-  const [password, setPassword] = useState(user.Password);
-  const [email, setEmail] = useState(user.Email);
-  const [birthday, setBirthday] = useState(user.Birthday);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -48,7 +48,7 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
     )
       .then(async (response) => {
         if (response.ok) {
-          const updatedUser = response.json();
+          const updatedUser = await response.json();
           localStorage.setItem('user', JSON.stringify(updatedUser));
           setUser(updatedUser);
           alert('Profile Updated!');
