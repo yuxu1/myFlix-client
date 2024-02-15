@@ -52,7 +52,7 @@ export const MainView = () => {
     fetch(`https://my-flix-project-b74d36752ec6.herokuapp.com/users/${user.Username}/movies/${movieId}`,{
       method:'POST',
       headers: {
-        Authorization: `Bearer${token}`
+        Authorization: `Bearer ${token}`
       }
     }).then((response) => {
       if(response.ok) {
@@ -72,7 +72,7 @@ export const MainView = () => {
     fetch (`https://my-flix-project-b74d36752ec6.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer${token}`
+        Authorization: `Bearer ${token}`
       }
     }).then((response) => {
       if(response.ok) {

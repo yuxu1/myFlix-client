@@ -17,12 +17,15 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
+  //filter through movies array to find movies that match those in the DB's FavoriteMovies array
   const favoriteMoviesList = movies.filter((m) => {
-    user.FavoriteMovies.includes(m.id);
+     return user.FavoriteMovies.includes(m.id);
   });
 
+  //used to update user's profile information
   const handleUpdate = (event) => {
     event.preventDefault();
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const data = {
       Username: username,
@@ -31,36 +34,38 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
       Birthday: birthday
     };
 
+    //fetch and update document from users collection in movies API
     fetch(
       `https://my-flix-project-b74d36752ec6.herokuapp.com/users/${user.Username}`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       }
     )
       .then(async (response) => {
         if (response.ok) {
-          response.json();
+          const updatedUser = response.json();
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          setUser(updatedUser);
           alert('Profile Updated!');
         } else {
           alert('Update was not made');
         }
       })
-      .then((updatedUser) => {
-        if (updatedUser) {
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          setUser(updatedUser);
-        }
+      .catch((err) => {
+        console.error('Error: ' + err);
       });
   };
 
+  //for deleting a user's profile
   const handleDelete = (e) => {
     e.preventDefault();
 
+    //confirmation window prompted by "Delete Account" button to prevent accidental deletion of profile
     const confirmDelete = window.confirm(
       'Are you sure you want to delete your profile? This cannot be undone.'
     );
@@ -73,15 +78,15 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
       {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer${token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     ).then((response) => {
       if (response.ok) {
-        alert('Profile has been deleted');
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         setUser(null);
+
         navigate('/login');
       } else {
         alert('Profile not successfully deleted');
@@ -91,25 +96,31 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
 
   return (
     <Container>
-      <Row>
+      {/* show user's favorite movies in form of <MovieCard> component or note if there are none */}
+      <Row className="justify-content-md-center" md={8}>
         <h2>Favorite Movies</h2>
         {favoriteMoviesList.length === 0 ? (
           <Col>
             <p>You haven't added any movies to favorites yet!</p>
           </Col>
         ) : (
-          favoriteMoviesList.map((movies) => {
-            <Col className="mb-5" key={movies.id} md={3}>
-              <MovieCard movie={movies} />
-              <Button variant="secondary" onClick={() => removeFavorite(movies.id)}>
-                Remove from favorites
-              </Button>
-            </Col>;
+          favoriteMoviesList.map((movie) => {
+            return (
+              <Col className="mb-5" key={movie.id}>
+                <MovieCard movie={movie} />
+                <Button
+                  variant="secondary"
+                  onClick={() => removeFavorite(movie.id)}
+                >
+                  Remove
+                </Button>
+              </Col>
+            );
           })
         )}
-        ;
       </Row>
 
+      {/* show the authenticated user's profile information (current) & form to update the information */}
       <Row>
         <Col md={6}>
           <Card>
@@ -117,11 +128,14 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
               <Card.Title>Current User Details</Card.Title>
               <Card.Text>Username: {user.Username}</Card.Text>
               <Card.Text>Email: {user.Email}</Card.Text>
-              <Card.Text>Birthday:{moment.utc(user.Birthday).format('MM/DD/YYYY')}</Card.Text>
+              <Card.Text>
+                Birthday:{moment.utc(user.Birthday).format('YYYY-MM-DD')}
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
 
+        {/* form to update user details & buttons to save changes and delete account */}
         <Col md={6}>
           <h3>Update User Details</h3>
           <Form className="profile-update-form" onSubmit={handleUpdate}>
@@ -131,7 +145,6 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                required
                 minLength="5"
               />
             </Form.Group>
@@ -141,9 +154,6 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength="8"
-                maxLength="16"
               />
             </Form.Group>
             <Form.Group controlId="updateEmail">
@@ -152,16 +162,14 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </Form.Group>
             <Form.Group controlId="updateBirthday">
               <Form.Label>Birthday:</Form.Label>
               <Form.Control
                 type="date"
-                value={moment.utc(birthday).format('MM/DD/YYYY')}
+                value={moment.utc(birthday).format('YYYY-MM-DD')}
                 onChange={(e) => setBirthday(e.target.value)}
-                required
               />
             </Form.Group>
             <Button variant="primary" type="submit" onClick={handleUpdate}>
@@ -176,35 +184,3 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
     </Container>
   );
 };
-
-/*
-  
-      <div>
-        <h2>Favorite Movies</h2>
-        
-        {favoriteMoviesList.map((movies) => {
-          return (
-            <>
-            {favoriteMoviesList.length===0 ? (
-            <Col>The list is empty!</Col>
-            ):(
-              <div key={movies.id}>
-              <img src={movies.image}/>
-              <Link to={`/movies/${movies.id}`}>
-                <h4>{movies.title}</h4>
-              </Link>
-              <Button variant='secondary' onClick={()=> removeFav(movies.id)}>
-                Remove from favorites
-              </Button>
-            </div>
-            )}
-           
-            </>
-            
-          )
-        })
-        }
-      </div>
-      
-    
-      */
