@@ -20,40 +20,40 @@ export const MovieView = ({ movies, addFavorite, removeFavorite }) => {
       </Col>
       <Col md={8}>
         <div className="h1">
-          <span>Title:</span>
+          <span>Title: </span>
           <span>{movie.title}</span>
         </div>
 
         <div className="h6">
-          <span>Description:</span>
+          <span>Description: </span>
           <p>{movie.description}</p>
         </div>
         <div className="h6">
-          <span>Director:</span>
+          <span>Director: </span>
           <span>{movie.director.Name}</span>
         </div>
         <div className="h6">
-          <span>Director Bio:</span>
+          <span>Director Bio: </span>
           <p>{movie.director.Bio}</p>
         </div>
         <div className="h6">
-          <span>Director Birth:</span>
+          <span>Director Birth: </span>
           <span>{movie.director.Birthyear}</span>
         </div>
         <div className="h6">
-          <span>Director Death:</span>
+          <span>Director Death: </span>
           <span>{movie.director.Deathyear}</span>
         </div>
         <div className="h6">
-          <span>Genre:</span>
+          <span>Genre: </span>
           <span>{movie.genre.Name}</span>
         </div>
         <div className="h6">
-          <span>Genre Description:</span>
+          <span>Genre Description: </span>
           <p>{movie.genre.Description}</p>
         </div>
         <div className="h6">
-          <span>Featured:</span>
+          <span>Featured: </span>
           {/* featured status (boolean) not visible in UI -> check for value and change it into a string */}
           <span>{movie.featured ? 'true' : 'false'}</span>
         </div>

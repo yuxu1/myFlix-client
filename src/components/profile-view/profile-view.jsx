@@ -10,17 +10,17 @@ import { MovieCard } from '../movie-card/movie-card';
 //import moment from 'moment';
 
 export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   //filter through movies array to find movies that match those in the DB's FavoriteMovies array
   const favoriteMoviesList = movies.filter((m) => {
     console.log(user);
-     return user.FavoriteMovies.includes(m.id);
+    return user.FavoriteMovies.includes(m.id);
   });
 
   //used to update user's profile information
@@ -32,7 +32,7 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
       Username: username,
       Password: password,
       Email: email,
-      Birthday: birthday
+      Birthday: birthday,
     };
 
     //fetch and update document from users collection in movies API
@@ -96,29 +96,35 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
   };
 
   return (
-    <Container>
+    <>
       {/* show user's favorite movies in form of <MovieCard> component or note if there are none */}
-      <Row className="justify-content-md-center" md={8}>
-        <h2>Favorite Movies</h2>
-        {favoriteMoviesList.length === 0 ? (
-          <Col>
-            <p>You haven't added any movies to favorites yet!</p>
-          </Col>
-        ) : (
-          favoriteMoviesList.map((movie) => {
-            return (
-              <Col className="mb-5" key={movie.id}>
-                <MovieCard movie={movie} />
-                <Button
-                  variant="secondary"
-                  onClick={() => removeFavorite(movie.id)}
-                >
-                  Remove
-                </Button>
-              </Col>
-            );
-          })
-        )}
+      <Row>
+        <Col>
+          <h3>Favorite Movies</h3>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {favoriteMoviesList.length === 0 ? (
+            <Col>
+              <p>You haven't added any movies to favorites yet!</p>
+            </Col>
+          ) : (
+            favoriteMoviesList.map((movie) => {
+              return (
+                <Col xs={12} md={4} lg={3} key={movie.id}>
+                  <MovieCard movie={movie} />
+                  <Button
+                    variant="secondary"
+                    onClick={() => removeFavorite(movie.id)}
+                  >
+                    Remove
+                  </Button>
+                </Col>
+              );
+            })
+          )}
+        </Col>
       </Row>
 
       {/* show the authenticated user's profile information (current) & form to update the information */}
@@ -131,7 +137,7 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
               <Card.Text>Email: {user.Email}</Card.Text>
               <Card.Text>
                 {/* Birthday:{moment.utc(user.Birthday).format('YYYY-MM-DD')} */}
-                Birthday: {user.Birthday.substring(0,10)}
+                Birthday: {user.Birthday.substring(0, 10)}
               </Card.Text>
             </Card.Body>
           </Card>
@@ -184,6 +190,6 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
           </Form>
         </Col>
       </Row>
-    </Container>
+    </>
   );
 };
