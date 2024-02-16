@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import { Card } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import { MovieCard } from '../movie-card/movie-card';
-import moment from 'moment';
+//import moment from 'moment';
 
 export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
   const [username, setUsername] = useState("");
@@ -19,6 +19,7 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
 
   //filter through movies array to find movies that match those in the DB's FavoriteMovies array
   const favoriteMoviesList = movies.filter((m) => {
+    console.log(user);
      return user.FavoriteMovies.includes(m.id);
   });
 
@@ -129,7 +130,8 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
               <Card.Text>Username: {user.Username}</Card.Text>
               <Card.Text>Email: {user.Email}</Card.Text>
               <Card.Text>
-                Birthday:{moment.utc(user.Birthday).format('YYYY-MM-DD')}
+                {/* Birthday:{moment.utc(user.Birthday).format('YYYY-MM-DD')} */}
+                Birthday: {user.Birthday.substring(0,10)}
               </Card.Text>
             </Card.Body>
           </Card>
@@ -168,7 +170,8 @@ export const ProfileView = ({ user, movies, setUser, removeFavorite }) => {
               <Form.Label>Birthday:</Form.Label>
               <Form.Control
                 type="date"
-                value={moment.utc(birthday).format('YYYY-MM-DD')}
+                //value={moment.utc(birthday).format('YYYY-MM-DD')}
+                value={birthday}
                 onChange={(e) => setBirthday(e.target.value)}
               />
             </Form.Group>
