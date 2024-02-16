@@ -41409,7 +41409,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h1",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Title:"
+                                children: "Title: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 23,
@@ -41432,7 +41432,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Description:"
+                                children: "Description: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 28,
@@ -41455,7 +41455,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Director:"
+                                children: "Director: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 32,
@@ -41478,7 +41478,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Director Bio:"
+                                children: "Director Bio: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 36,
@@ -41501,7 +41501,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Director Birth:"
+                                children: "Director Birth: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 40,
@@ -41524,7 +41524,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Director Death:"
+                                children: "Director Death: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 44,
@@ -41547,7 +41547,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Genre:"
+                                children: "Genre: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 48,
@@ -41570,7 +41570,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Genre Description:"
+                                children: "Genre Description: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 52,
@@ -41593,7 +41593,7 @@ const MovieView = ({ movies, addFavorite, removeFavorite })=>{
                         className: "h6",
                         children: [
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
-                                children: "Featured:"
+                                children: "Featured: "
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
                                 lineNumber: 56,
@@ -42302,7 +42302,8 @@ const ProfileView = ({ user, movies, setUser, removeFavorite })=>{
                                             }, undefined),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
                                                 type: "date",
-                                                value: (0, _momentDefault.default).utc(birthday).format("YYYY-MM-DD"),
+                                                //value={moment.utc(birthday).format('YYYY-MM-DD')}
+                                                value: birthday,
                                                 onChange: (e)=>setBirthday(e.target.value)
                                             }, void 0, false, {
                                                 fileName: "src/components/profile-view/profile-view.jsx",
@@ -42322,7 +42323,7 @@ const ProfileView = ({ user, movies, setUser, removeFavorite })=>{
                                         children: "Save Changes"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 177,
+                                        lineNumber: 178,
                                         columnNumber: 13
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
@@ -42332,7 +42333,7 @@ const ProfileView = ({ user, movies, setUser, removeFavorite })=>{
                                         children: "Delete Account"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
-                                        lineNumber: 180,
+                                        lineNumber: 181,
                                         columnNumber: 13
                                     }, undefined)
                                 ]
@@ -46144,7 +46145,8 @@ var _reactBootstrap = require("react-bootstrap");
 var _reactRouterDom = require("react-router-dom");
 const NavigationBar = ({ user, onLoggedOut })=>{
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Navbar), {
-        bg: "light",
+        bg: "dark",
+        variant: "dark",
         expand: "lg",
         children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Container), {
             children: [
