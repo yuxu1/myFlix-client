@@ -27641,7 +27641,7 @@ const MovieCard = ({ movie, addFavorite })=>{
                         to: `/movies/${encodeURIComponent(movie.id)}`,
                         children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Button), {
                             variant: "link",
-                            children: "Open"
+                            children: "Details"
                         }, void 0, false, {
                             fileName: "src/components/movie-card/movie-card.jsx",
                             lineNumber: 16,
