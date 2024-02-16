@@ -13,7 +13,7 @@ export const MovieCard = ({ movie, addFavorite }) => {
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text>{movie.genre.Name}</Card.Text>
         <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
-          <Button variant="link">Open</Button>
+          <Button variant="link">Details</Button>
         </Link>
         <Button variant="link" onClick={()=>addFavorite(movie.id)}>Add to Favorites</Button>
       </Card.Body>
